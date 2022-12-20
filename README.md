@@ -17,7 +17,7 @@ This is a script that downloads the daily prompt and the data files for Eric Wat
 ### Example Output File Structure
 
 ```
-advent_of_code_folder
+target_directory
 ├── 2022
 │   ├── day1
 │   │   ├── challenge.md
