@@ -1,0 +1,9 @@
+{
+    "config": {
+        "years": [],
+        "targetDir": null
+    }, 
+    "auth": {
+        "authToken": null
+    }
+}
