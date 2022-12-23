@@ -17,6 +17,7 @@ def download_day(year, day, auth_token) -> tuple:
     article = article.split('\n')
     article[0] = '#' + article[0].replace('-', '')
     article[1] = f'> [adventofcode.com/{year}/day/{day}](url)'
+    article.pop()
     content = '\n'.join(article)
 
     if auth_token is not None:

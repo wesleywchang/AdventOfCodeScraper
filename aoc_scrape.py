@@ -63,14 +63,14 @@ for year in sorted_years:
         curr_year = st.download_year(year, auth_token)
     elif year == now.year:
         stop = now.day if now.day < 26 else 26
-
+        start = now.day if now.day < 26 else 26
         for day in range(stop, 0, -1):
-            start = day
-            if os.path.isdir(f'{target_dir}/{year}/day{day}') is True:
+            if os.path.isdir(f'{target_dir}/{year}/day{start - 1}') is True:
                 if stop == day:
                     print("No new challenge is out yet! Please run the script again later")
                     sys.exit()
                 break
+            start = day - 1
         
         curr_year = st.download_year(year, auth_token, start, stop)
 
