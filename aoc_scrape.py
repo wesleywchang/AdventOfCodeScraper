@@ -61,8 +61,6 @@ else:
     auth_token = None
     sorted_years = [AOC_CURR_YEAR]
 
-
-
 for year in sorted_years:
     if year < now.year:
         curr_year = st.download_year(year, auth_token)
@@ -97,7 +95,6 @@ for year in sorted_years:
                         pass
                 else:
                     os.makedirs(f'{target_dir}/{year}/day{day}')
-
 
                 with open(f'{target_dir}/{year}/day{day}/challenge.md', 'w', encoding='utf8') as challenge:
                     challenge.write(curr_year[day][0])
