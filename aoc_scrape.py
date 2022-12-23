@@ -7,7 +7,8 @@ from pytz import timezone
 import scraper_tools as st
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-c', help='Specify settings file location, defaults to settings.json in current directory')
+parser.add_argument('-c', help='CONFIG: Specify settings file location, defaults to settings.json in current directory')
+parser.add_argument('-o', action='store_true', help='OVERWRITE: Overwrites currently downloaded files, wii NOT touch solution files in any way')
 args = parser.parse_args()
 
 if args.c:
@@ -15,6 +16,10 @@ if args.c:
 else:
     CONFIG_FILE = False
 
+if args.o:
+    OVERWRITE = True
+else:
+    OVERWRITE = False
 
 AOC_FIRST_YEAR = 2015
 TZ = timezone('EST')
@@ -61,9 +66,18 @@ else:
 for year in sorted_years:
     if year < now.year:
         curr_year = st.download_year(year, auth_token)
+    elif OVERWRITE:
+        if year == now.year:
+            stop = now.day if now.day < 26 else 26
+        else:
+            stop = 26
+
+        curr_year = st.download_year(year, auth_token, 1, stop)
+
     elif year == now.year:
         stop = now.day if now.day < 26 else 26
         start = now.day if now.day < 26 else 26
+
         for day in range(stop, 0, -1):
             if os.path.isdir(f'{target_dir}/{year}/day{start - 1}') is True:
                 if stop == day:
@@ -74,13 +88,20 @@ for year in sorted_years:
         
         curr_year = st.download_year(year, auth_token, start, stop)
 
-    if curr_year is not False:
-        for day in curr_year:
-            os.makedirs(f'{target_dir}/{year}/day{day}')
+        if curr_year is not False:
+            for day in curr_year:
+                if OVERWRITE:
+                    try:
+                        os.makedirs(f'{target_dir}/{year}/day{day}')
+                    except FileExistsError as f:
+                        pass
+                else:
+                    os.makedirs(f'{target_dir}/{year}/day{day}')
 
-            with open(f'{target_dir}/{year}/day{day}/challenge.md', 'w', encoding='utf8') as challenge:
-                challenge.write(curr_year[day][0])
-            
-            if curr_year[day][1] is not None:
-                with open(f'{target_dir}/{year}/day{day}/data.txt','w',encoding='utf8') as data:
-                    data.write(curr_year[day][1])
+
+                with open(f'{target_dir}/{year}/day{day}/challenge.md', 'w', encoding='utf8') as challenge:
+                    challenge.write(curr_year[day][0])
+                
+                if curr_year[day][1] is not None:
+                    with open(f'{target_dir}/{year}/day{day}/data.txt','w',encoding='utf8') as data:
+                        data.write(curr_year[day][1])

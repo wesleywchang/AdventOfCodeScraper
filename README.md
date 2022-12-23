@@ -14,6 +14,9 @@ This is a script that downloads the daily prompt and the data files for Eric Wat
 - Specify a configuration file. Details below.
 - This argument must be specified in order to retrieve input data files.
 
+```python aoc_scrape.py -o```
+- If there are currently downloaded files (challenge and/or data), will overwrite the current files with new ones
+
 ### Example Output File Structure
 
 ```
